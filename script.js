@@ -1,5 +1,4 @@
-const Player = (pName, symbol) => { 
-    const name = pName || ("Player " + symbol);
+const Player = (name, symbol) => { 
     const play = (btn_id) =>{
         let btn = document.getElementById(btn_id);
         btn.innerHTML = symbol;
@@ -8,7 +7,8 @@ const Player = (pName, symbol) => {
     return {name, symbol, play}
 };
 
-
+let playerX = Player("Player X", "X");;
+let playerO = Player("PLayer Y", "O");;
 
 const gameBoard = (()=>{
     const gameLog = [];
@@ -21,6 +21,8 @@ const gameBoard = (()=>{
         winDisp.style.visibility = "hidden";
         board.style.visibility = "visible";
         game.start();
+        console.log(playerX);
+        console.log(playerO);
         for(let i = 1, id = 1; i <= 3; i++){
             let col = document.createElement("div");
             col.classList.add("col"+i);
@@ -44,7 +46,6 @@ const gameBoard = (()=>{
         input.innerHTML="";
         let form = document.createElement("form");
         form.name = "form";
-        
         let name = document.createElement("div");
         name.innerHTML = "Input Player 1 name : <br>";
 
@@ -58,15 +59,19 @@ const gameBoard = (()=>{
         name2.name="player2";
         name.appendChild(name2);
 
-        let submit = document.createElement("input");
-        submit.type = "submit";
-        submit.value = "Play!";
-        form.addEventListener("submit", ()=>{
-            let nameX = document.forms["form"]["player1"];
-            let nameY = document.forms["form"]["player2"];
-            createPlayers(nameX, nameY);
+        let submit = document.createElement("button");
+        submit.innerHTML = "Play!";
+        submit.addEventListener("click", ()=>{
+            let nameX = document.forms["form"]["player1"].value;
+            let nameO = document.forms["form"]["player2"].value;
+            if(nameX === "")
+                nameX = "Player X";
+            if(nameO === "")
+                nameO = "Player O";
+            playerX.name = nameX;
+            playerO.name = nameO;
+            initialise();
         });
-
         form.appendChild(name);
         form.appendChild(submit);
         input.appendChild(form);
@@ -78,18 +83,9 @@ const gameBoard = (()=>{
         winDisp.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerO.name : playerX.name);
         winDisp.style.visibility = "visible";
     }
-    return { initialise, gameLog, dispWinner, dispForm };
+    return { playerX, playerO, initialise, gameLog, dispWinner, dispForm };
 })();
 gameBoard.dispForm();
-
-
-let playerX;
-let playerO;
-function createPlayers(x, o){
-    playerX = Player(x, "X");
-    playerO = Player(0, "O");
-    gameBoard.initialise();
-}
 
 
 
