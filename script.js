@@ -101,10 +101,13 @@ const gameBoard = (()=>{
     const btns = document.querySelector(".btns");
     const initialise = () => {
         board.innerHTML = "";
+        winDisp.classList.remove("on-visible-winner");
+        btns.classList.remove("on-winner-btn");
         winDisp.style.visibility = "hidden";
         board.style.visibility = "visible";
-        board.classList.add("on-visible");
+        board.classList.add("on-visible-board");
         btns.style.visibility = "visible";
+        setTimeout(function(){board.classList.remove("on-visible-board");}, 2000);
         game.start();
         console.log(playerX);
         console.log(playerO);
@@ -141,7 +144,10 @@ const gameBoard = (()=>{
             winDisp.innerHTML = "Game is a draw";
         else
             winDisp.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerX.name : playerO.name);
+        
         winDisp.style.visibility = "visible";
+        winDisp.classList.add("on-visible-winner"); 
+        setTimeout(function(){btns.classList.add("on-winner-btn");}, 1500); 
     }
     return { gameLog, dispWinner, dispForm };
 })();
