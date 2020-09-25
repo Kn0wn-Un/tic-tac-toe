@@ -8,84 +8,7 @@ const Player = (name, symbol) => {
 };
 
 let playerX = Player("Player X", "X");;
-let playerO = Player("PLayer Y", "O");;
-
-const gameBoard = (()=>{
-    const gameLog = [];
-    const board = document.querySelector(".game-board");
-    const winDisp = document.querySelector(".winner");
-    const input = document.querySelector(".input");
-    const initialise = () => {
-        board.innerHTML = "";
-        input.style.visibility = "hidden";
-        winDisp.style.visibility = "hidden";
-        board.style.visibility = "visible";
-        game.start();
-        console.log(playerX);
-        console.log(playerO);
-        for(let i = 1, id = 1; i <= 3; i++){
-            let col = document.createElement("div");
-            col.classList.add("col"+i);
-            for(let j = 1; j <= 3; j++, id++){
-                let play = document.createElement("div");
-                play.classList.add("play");
-                play.id = id;
-                play.addEventListener("click", ()=>game.letPlay(play.id));
-                col.appendChild(play);
-            }
-            board.appendChild(col);
-        }
-        let restartBtn = document.querySelectorAll("#restart");
-        for(let i = 0; i < restartBtn.length; i++)
-            restartBtn[i].addEventListener("click", initialise);
-    };
-    const dispForm = () =>{
-        input.style.visibility = "visible";
-        board.style.visibility = "hidden";
-        winDisp.style.visibility = "hidden";
-        input.innerHTML="";
-        let form = document.createElement("form");
-        form.name = "form";
-        let name = document.createElement("div");
-        name.innerHTML = "Input Player 1 name : <br>";
-
-        let name1 = document.createElement("input");
-        name1.type = "text";
-        name1.name="player1";
-        name.appendChild(name1);
-        name.innerHTML += "<br>Input Player 2 name : <br>";
-        let name2 = document.createElement("input");
-        name2.type = "text";
-        name2.name="player2";
-        name.appendChild(name2);
-
-        let submit = document.createElement("button");
-        submit.innerHTML = "Play!";
-        submit.addEventListener("click", ()=>{
-            let nameX = document.forms["form"]["player1"].value;
-            let nameO = document.forms["form"]["player2"].value;
-            if(nameX === "")
-                nameX = "Player X";
-            if(nameO === "")
-                nameO = "Player O";
-            playerX.name = nameX;
-            playerO.name = nameO;
-            initialise();
-        });
-        form.appendChild(name);
-        form.appendChild(submit);
-        input.appendChild(form);
-    }
-    const dispWinner = (winner) => {
-        console.log(winner);
-        board.style.visibility = "hidden"; 
-        input.style.visibility = "hidden";    
-        winDisp.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerO.name : playerX.name);
-        winDisp.style.visibility = "visible";
-    }
-    return { playerX, playerO, initialise, gameLog, dispWinner, dispForm };
-})();
-gameBoard.dispForm();
+let playerO = Player("Player Y", "O");;
 
 
 
@@ -172,3 +95,49 @@ const game = (()=>{
 
 
 
+const gameBoard = (()=>{
+    const gameLog = [];
+    const board = document.querySelector(".game-board");
+    const winDisp = document.querySelector(".winner");
+    const btns = document.querySelector(".btns");
+    const initialise = () => {
+        board.innerHTML = "";
+        winDisp.style.visibility = "hidden";
+        board.style.visibility = "visible";
+        btns.style.visibility = "visible";
+        game.start();
+        console.log(playerX);
+        console.log(playerO);
+        for(let i = 1, id = 1; i <= 3; i++){
+            let col = document.createElement("div");
+            col.classList.add("col"+i);
+            for(let j = 1; j <= 3; j++, id++){
+                let play = document.createElement("div");
+                play.classList.add("play");
+                play.id = id;
+                play.addEventListener("click", ()=>game.letPlay(play.id));
+                col.appendChild(play);
+            }
+            board.appendChild(col);
+        }
+        let restartBtn = document.querySelector("#restart");
+        restartBtn.addEventListener("click", initialise);
+        let change = document.querySelector("#change");
+        change.addEventListener("click", dispForm);
+    };
+    const dispForm = () =>{
+        let name1 = prompt("Enter Player 1 Name", "PlayerX");
+        let name2 = prompt("Enter Player 2 Name", "PlayerO");
+        if(name1 != null) playerX.name = name1;
+        if(name2 != null) playerO.name = name2;
+        initialise();
+    }
+    const dispWinner = (winner) => {
+        console.log(winner);
+        board.style.visibility = "hidden"; 
+        winDisp.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerO.name : playerX.name);
+        winDisp.style.visibility = "visible";
+    }
+    return { gameLog, dispWinner, dispForm };
+})();
+gameBoard.dispForm();

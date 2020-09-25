@@ -33,6 +33,7 @@ body{
     display: grid;
     grid-template-areas: "col1" "." "col2" "." "col3" ;
     grid-template-rows: 160px 10px 160px 10px 160px;
+    visibility: hidden;
 }
 .play{
     text-align: center;
@@ -64,5 +65,9 @@ body{
     position: relative;
     top: -450px;
     background-color: red;
-    visibility: visible;
+    visibility: hidden;
+}
+.btns{
+    visibility: hidden;
+    padding: 10px;
 }
