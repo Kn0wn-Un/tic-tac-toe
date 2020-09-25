@@ -8,7 +8,7 @@ const Player = (name, symbol) => {
 };
 
 let playerX = Player("Player X", "X");;
-let playerO = Player("Player Y", "O");;
+let playerO = Player("Player O", "O");;
 
 
 
@@ -38,7 +38,6 @@ const game = (()=>{
         curPlaying === playerX.symbol ? playerX.play(id) : playerO.play(id);
         logBoard();
         if(checkWinner()){
-            gameBoard.dispWinner(checkWinner());
             return;
         }
         nextPlayer();
@@ -69,12 +68,12 @@ const game = (()=>{
         let O = getLength("O", tBoard);
         for(let i = 0; i < winPos.length; i++){
             if(arrayCheck("X", winPos[i], tBoard))
-                return "X";
+                gameBoard.dispWinner("X");
             else if(arrayCheck("O", winPos[i], tBoard))
-                return "O"
+                gameBoard.dispWinner("O");
         }
         if(X + O === 9)
-            return "Draw";
+            gameBoard.dispWinner("Draw");
         return false
     }
     const getLength = (sym, board) =>{
@@ -104,6 +103,7 @@ const gameBoard = (()=>{
         board.innerHTML = "";
         winDisp.style.visibility = "hidden";
         board.style.visibility = "visible";
+        board.classList.add("on-visible");
         btns.style.visibility = "visible";
         game.start();
         console.log(playerX);
@@ -130,12 +130,17 @@ const gameBoard = (()=>{
         let name2 = prompt("Enter Player 2 Name", "PlayerO");
         if(name1 != null) playerX.name = name1;
         if(name2 != null) playerO.name = name2;
+        let dispCur = document.querySelector(".player-disp");
+        dispCur.innerHTML = playerX.name + "(" + playerX.symbol + ")" ;
         initialise();
     }
     const dispWinner = (winner) => {
         console.log(winner);
         board.style.visibility = "hidden"; 
-        winDisp.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerO.name : playerX.name);
+        if(winner === "Draw")
+            winDisp.innerHTML = "Game is a draw";
+        else
+            winDisp.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerX.name : playerO.name);
         winDisp.style.visibility = "visible";
     }
     return { gameLog, dispWinner, dispForm };
