@@ -1,19 +1,21 @@
+//player object
 const Player = (name, symbol) => { 
     const play = (btn_id) =>{
         let btn = document.getElementById(btn_id);
         btn.innerHTML = symbol;
-        console.log(btn_id);
     };
     return {name, symbol, play}
 };
 
+//make two players
 let playerX = Player("Player X", "X");;
 let playerO = Player("Player O", "O");;
 
 
 
+//game module to keep track of moves and player
 const game = (()=>{
-    let curPlaying="O";
+    let curPlaying;
     const winPos = [
         [0, 1, 2],
         [3, 4, 5],
@@ -24,6 +26,7 @@ const game = (()=>{
         [0, 4, 8],
         [2, 4, 6]
     ];
+    //check if move is valid
     const checkMove = (id) =>{
         if(gameBoard.gameLog.length === 0)
             return true
@@ -32,26 +35,24 @@ const game = (()=>{
             return false;
         return true;
     } 
+    //check if move is valid and not a winning move
     const letPlay = (id) =>{
         if(!checkMove(id))
             return;
-        curPlaying === playerX.symbol ? playerX.play(id) : playerO.play(id);
+        playerX.play(id);
         logBoard();
         if(checkWinner(gameBoard.gameLog[gameBoard.gameLog.length - 1])){
             gameBoard.dispWinner(checkWinner(gameBoard.gameLog[gameBoard.gameLog.length - 1]));
             return;
         }
-        nextPlayer();
+        ai.playAi();
+        logBoard();
+        if(checkWinner(gameBoard.gameLog[gameBoard.gameLog.length - 1])){
+            gameBoard.dispWinner(checkWinner(gameBoard.gameLog[gameBoard.gameLog.length - 1]));
+            return;
+        }
     };
-    const nextPlayer = ()=>{
-        curPlaying = curPlaying === playerX.symbol ? playerO.symbol : playerX.symbol;
-        let dispCur = document.querySelector(".player-disp");
-        dispCur.innerHTML = curPlaying === playerX.symbol ? 
-                            playerX.name + "(" + playerX.symbol + ")" 
-                            :playerO.name+ "(" + playerO.symbol + ")"; 
-        if(curPlaying === playerO.symbol)
-            playAi();
-    }
+    //if move valid lod the board
     const logBoard = () =>{
         let board = [];
         for(let i = 0; i < 9; i++){
@@ -59,11 +60,12 @@ const game = (()=>{
             board[i] = btn.innerHTML;
         }
         gameBoard.gameLog.push(board);
-        console.log(gameBoard.gameLog);
     }
+    //reset board
     const start = () =>{
         gameBoard.gameLog = [];
     }
+    //check for winner
     const checkWinner = (tBoard) =>{
         let X = getLength("X", tBoard);
         let O = getLength("O", tBoard);
@@ -77,6 +79,7 @@ const game = (()=>{
             return "Draw";
         return false
     }
+    //get the positions of X and O
     const getLength = (sym, board) =>{
         let tArr = [];
         for(let i = 0; i < board.length; i++)
@@ -84,23 +87,26 @@ const game = (()=>{
                 tArr.push(i);
         return tArr.length;
     }
+    //check if the positions of X or O are in corresponding winning positions
     const arrayCheck = (sym, win, board) =>{
         for(let i = 0; i < win.length; i++)
             if(board[win[i]] != sym) return false;
         return true;
     }
     
-    return { start, letPlay, checkWinner }
+    return { start, letPlay, checkWinner, curPlaying }
 })();
 
 
 
+//game board module to keep track of game and other display elements
 const gameBoard = (()=>{
     const gameLog = [];
     const board = document.querySelector(".game-board");
     const winDisp = document.querySelector(".winner");
     const win = document.querySelector("#dispWinner");
     const btns = document.querySelector(".btns");
+    //setup the board and play area
     const initialise = () => {
         board.innerHTML = "";
         winDisp.classList.remove("on-visible-winner");
@@ -111,8 +117,6 @@ const gameBoard = (()=>{
         btns.style.visibility = "visible";
         setTimeout(function(){board.classList.remove("on-visible-board");}, 2000);
         game.start();
-        console.log(playerX);
-        console.log(playerO);
         for(let i = 1, id = 0; i <= 3; i++){
             let col = document.createElement("div");
             col.classList.add("col"+i);
@@ -126,30 +130,37 @@ const gameBoard = (()=>{
             board.appendChild(col);
         }
         let restartBtn = document.querySelector("#restart");
-        restartBtn.addEventListener("click", initialise);
+        restartBtn.addEventListener("click", setRand);
         let change = document.querySelector("#change");
         change.addEventListener("click", dispForm);
     };
+    //user name input
     const dispForm = () =>{
         let name1 = prompt("Enter Player 1 Name", "PlayerX");
-        let name2 = prompt("Enter Player 2 Name", "PlayerO");
         if(name1 != null) playerX.name = name1;
-        if(name2 != null) playerO.name = name2;
-        let dispCur = document.querySelector(".player-disp");
-        dispCur.innerHTML = playerX.name + "(" + playerX.symbol + ")" ;
-        initialise();
+        //let name2 = prompt("Enter Player 2 Name", "PlayerO");
+        //if(name2 != null) playerO.name = name2;
+        setRand();
     }
+    //handling displaying the winner / draw
     const dispWinner = (winner) => {
-        console.log(winner);
         board.style.visibility = "hidden"; 
         if(winner === "Draw")
             win.innerHTML = "Game is a draw";
         else
             win.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerX.name : playerO.name);
-        
         winDisp.style.visibility = "visible";
         winDisp.classList.add("on-visible-winner"); 
-        setTimeout(function(){btns.classList.add("on-winner-btn");}, 1500); 
+        setTimeout(function(){btns.classList.add("on-winner-btn");}, 1250); 
+    }
+    //randomly set the starting player
+    const setRand = ()=>{
+        let dispCur = document.querySelector(".player-disp");
+        game.curPlaying = !(Math.floor(Math.random() * 2)) ? playerX.symbol : playerO.symbol;
+        dispCur.innerHTML = game.curPlaying === playerX.symbol? playerX.name + ", you are starting": "AI has started";
+        initialise();
+        if(game.curPlaying === playerO.symbol)
+            ai.playAi();
     }
     return { gameLog, dispWinner, dispForm };
 })();
