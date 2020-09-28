@@ -1,12 +1,12 @@
-# tic-tac-toe
+# Tic-Tac-Toe
 
 ### View in Browser
 
-[Tic-Tac-Toe] (https://kn0wn-un.github.io/tic-tac-toe/)
+[Tic-Tac-Toe](https://kn0wn-un.github.io/tic-tac-toe/)
 
 ### Introduction
 
-Play tic-tac-toe with AI, 
+Play Tic-Tac-Toe with AI, 
 the player will be playing X and the AI will be playing O,
 staring player will be randomly picked by the program.
 
