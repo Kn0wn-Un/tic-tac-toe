@@ -13,16 +13,16 @@ let playerO = Player("Player O", "O");;
 
 
 const game = (()=>{
-    let curPlaying="X";
+    let curPlaying="O";
     const winPos = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
         [1, 4, 7],
         [2, 5, 8],
-        [3, 6, 9],
-        [1, 5, 9],
-        [3, 5, 7]
+        [0, 4, 8],
+        [2, 4, 6]
     ];
     const checkMove = (id) =>{
         if(gameBoard.gameLog.length === 0)
@@ -37,7 +37,8 @@ const game = (()=>{
             return;
         curPlaying === playerX.symbol ? playerX.play(id) : playerO.play(id);
         logBoard();
-        if(checkWinner()){
+        if(checkWinner(gameBoard.gameLog[gameBoard.gameLog.length - 1])){
+            gameBoard.dispWinner(checkWinner(gameBoard.gameLog[gameBoard.gameLog.length - 1]));
             return;
         }
         nextPlayer();
@@ -48,10 +49,12 @@ const game = (()=>{
         dispCur.innerHTML = curPlaying === playerX.symbol ? 
                             playerX.name + "(" + playerX.symbol + ")" 
                             :playerO.name+ "(" + playerO.symbol + ")"; 
+        if(curPlaying === playerO.symbol)
+            playAi();
     }
     const logBoard = () =>{
         let board = [];
-        for(let i = 1; i <= 9; i++){
+        for(let i = 0; i < 9; i++){
             let btn = document.getElementById(i);
             board[i] = btn.innerHTML;
         }
@@ -61,19 +64,17 @@ const game = (()=>{
     const start = () =>{
         gameBoard.gameLog = [];
     }
-    const checkWinner = () =>{
-        let tBoard = gameBoard.gameLog[gameBoard.gameLog.length - 1];
-        console.log(tBoard);
+    const checkWinner = (tBoard) =>{
         let X = getLength("X", tBoard);
         let O = getLength("O", tBoard);
         for(let i = 0; i < winPos.length; i++){
             if(arrayCheck("X", winPos[i], tBoard))
-                gameBoard.dispWinner("X");
+                return "X";
             else if(arrayCheck("O", winPos[i], tBoard))
-                gameBoard.dispWinner("O");
+                return "O";
         }
         if(X + O === 9)
-            gameBoard.dispWinner("Draw");
+            return "Draw";
         return false
     }
     const getLength = (sym, board) =>{
@@ -89,7 +90,7 @@ const game = (()=>{
         return true;
     }
     
-    return { start, letPlay }
+    return { start, letPlay, checkWinner }
 })();
 
 
@@ -112,7 +113,7 @@ const gameBoard = (()=>{
         game.start();
         console.log(playerX);
         console.log(playerO);
-        for(let i = 1, id = 1; i <= 3; i++){
+        for(let i = 1, id = 0; i <= 3; i++){
             let col = document.createElement("div");
             col.classList.add("col"+i);
             for(let j = 1; j <= 3; j++, id++){

@@ -114,6 +114,7 @@ body{
 }
 footer{
     width: 100%;
+    font-size: 20px;
     text-align: center;
     color: rgb(240, 58, 71);
     background-color: rgb(10, 36, 114);
