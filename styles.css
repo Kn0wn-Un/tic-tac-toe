@@ -6,26 +6,23 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(50, 100, 100);
-    font-family: Arial, Helvetica, sans-serif;
-}
-.heading{
-    background-color: 100;
+    background-color: rgb(52, 228, 234);
+    font-family: Bubblegum Sans;
 }
 .heading h2{
     font-size: 50px;
     margin-top: 10px;
-    color: whitesmoke;
+    color: rgb(0, 28, 85);
 }
 .currently-playing{
     margin: 10px;
     font-size: 25px;
-    color: whitesmoke;
+    color: rgb(0, 28, 85);
     display: flex;
     flex-direction: row;
 }
 .player-disp{
-    color: orangered;
+    color: rgb(216, 30, 91);
 }
 .game-board{
     margin: 20px;
@@ -42,7 +39,7 @@ body{
     font-size: 150px;
     height: 160px;
     width: 160px;
-    background-color: rgb(0, 59, 59);
+    background-color: rgb(14, 177, 210);
 }
 
 .col1, .col2, .col3{
@@ -65,16 +62,20 @@ body{
 .winner{
     width: 100%;
     height: 200px;
+    margin-top: 40px;
     font-size: 100px;
     text-align: center;
     position: relative;
-    top: -450px;
-    color: black;
+    top: -650px;
+    color: rgb(216, 30, 91);
     background-image: url("https://library.kissclipart.com/20180901/ocq/kissclipart-confetti-background-png-clipart-clip-art-9315a7c08fab1bdd.png");
     visibility: hidden;
 }
+#dispWinner{
+    position: relative;
+    top: 200px;
+}
 .btns{
-    margin-top: 55px;
     visibility: hidden;
     position: relative;
     text-align: center;
@@ -92,23 +93,31 @@ body{
     animation: fadein 1.5s;
 }
 @keyframes popup {
-    0% { top: -1000px;}
-    20% { top: -250px;}
-    50% { top: -500px;}
-    100% { top: -450px;}
+    0% {transform: scale(0.1);}
+    50% {transform: scale(2);}
+    100% {}
 }
 .on-visible-winner{
-    animation: popup 1.5s;
+    animation: popup 0.75s;
     animation-timing-function: ease;
 }
 @keyframes seeme {
     0% {}
-    25% { background-color: red; transform: scale(1.2);}
-    50% { background-color: red; transform: scale(1.1);}
+    25% { background-color: rgb(14, 177, 210); transform: scale(1.2);}
+    50% { background-color: rgb(14, 177, 210); transform: scale(1.1);}
     100% { transform: scale(1);}
 }
 .on-winner-btn{
     animation: seeme 1s;
     animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    animation-timing-function: ease;
+}
+footer{
+    width: 100%;
+    text-align: center;
+    color: rgb(240, 58, 71);
+    background-color: rgb(10, 36, 114);
+}
+a{
+    color: rgb(175, 91, 91);
 }

@@ -98,6 +98,7 @@ const gameBoard = (()=>{
     const gameLog = [];
     const board = document.querySelector(".game-board");
     const winDisp = document.querySelector(".winner");
+    const win = document.querySelector("#dispWinner");
     const btns = document.querySelector(".btns");
     const initialise = () => {
         board.innerHTML = "";
@@ -141,9 +142,9 @@ const gameBoard = (()=>{
         console.log(winner);
         board.style.visibility = "hidden"; 
         if(winner === "Draw")
-            winDisp.innerHTML = "Game is a draw";
+            win.innerHTML = "Game is a draw";
         else
-            winDisp.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerX.name : playerO.name);
+            win.innerHTML = "Winner is " +  (winner === playerX.symbol ? playerX.name : playerO.name);
         
         winDisp.style.visibility = "visible";
         winDisp.classList.add("on-visible-winner"); 

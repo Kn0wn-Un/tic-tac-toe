@@ -3,15 +3,20 @@
     <head>
         <title>Tix-Tac-Toe</title>
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bubblegum+Sans" />
     </head>
     <body>
         <div class="heading">
             <h2>TIC-TAC-TOE</h2>
-            <div class="currently-playing">Currently Playing:<div class="player-disp"></div></div>
+            <div class="currently-playing"><div class="player-disp"></div>'s move</div>
         </div>
         <div class="game-board"></div>
         <div class="btns"><button id="restart">Restart</button><button id="change">Change Name</button></div>
-        <div class="winner"></div>
+        <div class="winner"><div id="dispWinner">Someone</div></div>
+        <footer>
+            <p>Made By: Darshan<br>
+            <a href="#">View Source on GitHub</a></p>
+        </footer>
         <script async src="script.js"></script>
     </body>
 </html>
